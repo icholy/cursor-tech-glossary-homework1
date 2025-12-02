@@ -42,8 +42,36 @@ const glossaryEntries = [
     }
 ];
 
+// Filter glossary entries by query
+function filterGlossaryEntries(query) {
+    if (!query || query.trim() === '') {
+        return glossaryEntries;
+    }
+    
+    const lowerQuery = query.toLowerCase().trim();
+    
+    return glossaryEntries.filter(entry => {
+        // Check term
+        if (entry.term.toLowerCase().includes(lowerQuery)) {
+            return true;
+        }
+        
+        // Check description
+        if (entry.description.toLowerCase().includes(lowerQuery)) {
+            return true;
+        }
+        
+        // Check tags
+        if (entry.tags.some(tag => tag.toLowerCase().includes(lowerQuery))) {
+            return true;
+        }
+        
+        return false;
+    });
+}
+
 // Render glossary entries
-function renderGlossary() {
+function renderGlossary(entries = glossaryEntries) {
     const container = document.getElementById('glossary-container');
     
     if (!container) {
@@ -51,7 +79,7 @@ function renderGlossary() {
         return;
     }
 
-    container.innerHTML = glossaryEntries.map(entry => `
+    container.innerHTML = entries.map(entry => `
         <article class="bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md hover:border-gray-300 transition-all">
             <h2 class="text-2xl font-bold text-gray-900 mb-2.5 leading-tight tracking-tight">${entry.term}</h2>
             <p class="text-gray-700 mb-4 leading-relaxed text-base">${entry.description}</p>
@@ -67,5 +95,43 @@ function renderGlossary() {
 }
 
 // Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', renderGlossary);
+document.addEventListener('DOMContentLoaded', () => {
+    renderGlossary();
+    
+    const searchInput = document.getElementById('search-input');
+    const clearButton = document.getElementById('clear-search');
+    
+    // Function to update clear button visibility
+    function updateClearButton() {
+        if (searchInput && clearButton) {
+            if (searchInput.value.trim() !== '') {
+                clearButton.classList.remove('hidden');
+            } else {
+                clearButton.classList.add('hidden');
+            }
+        }
+    }
+    
+    // Add search input event listener
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value;
+            const filteredEntries = filterGlossaryEntries(query);
+            renderGlossary(filteredEntries);
+            updateClearButton();
+        });
+    }
+    
+    // Add clear button event listener
+    if (clearButton) {
+        clearButton.addEventListener('click', () => {
+            if (searchInput) {
+                searchInput.value = '';
+                renderGlossary();
+                searchInput.focus();
+                updateClearButton();
+            }
+        });
+    }
+});
 
