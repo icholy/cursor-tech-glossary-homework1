@@ -52,12 +52,12 @@ function renderGlossary() {
     }
 
     container.innerHTML = glossaryEntries.map(entry => `
-        <article class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
-            <h2 class="text-xl font-semibold text-gray-900 mb-1.5 leading-tight">${entry.term}</h2>
-            <p class="text-gray-800 mb-3 leading-relaxed text-sm">${entry.description}</p>
-            <div class="flex flex-wrap gap-1.5">
+        <article class="bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md hover:border-gray-300 transition-all">
+            <h2 class="text-2xl font-bold text-gray-900 mb-2.5 leading-tight tracking-tight">${entry.term}</h2>
+            <p class="text-gray-700 mb-4 leading-relaxed text-base">${entry.description}</p>
+            <div class="flex flex-wrap gap-2 pt-2 border-t border-gray-100">
                 ${entry.tags.map(tag => `
-                    <span class="px-2.5 py-0.5 bg-blue-600 text-white text-xs font-medium rounded-md" aria-label="Tag: ${tag}">
+                    <span class="px-3 py-1 bg-blue-600 text-white text-xs font-semibold rounded-md uppercase tracking-wide" aria-label="Tag: ${tag}">
                         ${tag}
                     </span>
                 `).join('')}
