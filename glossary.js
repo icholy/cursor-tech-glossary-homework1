@@ -94,8 +94,9 @@ function renderGlossary(entries = glossaryEntries) {
     `).join('');
 }
 
-// Initialize when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize when DOM is loaded (browser only)
+if (typeof document !== 'undefined') {
+    document.addEventListener('DOMContentLoaded', () => {
     renderGlossary();
     
     const searchInput = document.getElementById('search-input');
@@ -133,5 +134,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-});
+    });
+}
+
+// Export for testing (ES modules)
+export { filterGlossaryEntries, glossaryEntries };
 
